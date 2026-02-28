@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
-import { Calculator, FileText } from "lucide-react";
+import { Calculator, FileText, Save, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const currency = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -7,7 +9,7 @@ const currency = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
 });
 
-const QuoteCalculator = () => {
+const QuoteCalculator = ({ onQuoteSaved }: { onQuoteSaved?: () => void }) => {
   const [projectType, setProjectType] = useState("web_application");
   const [complexity, setComplexity] = useState("medium");
   const [pages, setPages] = useState(8);
@@ -15,6 +17,12 @@ const QuoteCalculator = () => {
   const [customFeatures, setCustomFeatures] = useState(3);
   const [timelineWeeks, setTimelineWeeks] = useState(8);
   const [submitted, setSubmitted] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [clientName, setClientName] = useState("");
+  const [clientEmail, setClientEmail] = useState("");
+  const [clientPhone, setClientPhone] = useState("");
+  const [clientCompany, setClientCompany] = useState("");
+  const [description, setDescription] = useState("");
 
   const breakdown = useMemo(() => {
     const typeBase: Record<string, number> = {
@@ -63,6 +71,41 @@ const QuoteCalculator = () => {
     };
   }, [projectType, complexity, pages, integrations, customFeatures, timelineWeeks]);
 
+  const saveToDatabase = async () => {
+    if (!description.trim()) {
+      toast.error("Please enter a project description");
+      return;
+    }
+    setSaving(true);
+    const analysisText = `Project: ${projectType.replace("_", " ")} | Complexity: ${complexity} | ${pages} pages | ${integrations} integrations | ${customFeatures} custom modules | ${timelineWeeks} weeks\nTotal: ${currency.format(breakdown.totalProject)} | Monthly: ${currency.format(breakdown.monthlyCore)}-${currency.format(breakdown.monthlyScale)}/mo`;
+
+    const { error } = await supabase.from("quotes").insert({
+      client_name: clientName || null,
+      client_email: clientEmail || null,
+      client_phone: clientPhone || null,
+      client_company: clientCompany || null,
+      project_description: description,
+      project_type: projectType,
+      status: "draft",
+      standard_analysis: analysisText,
+      key_features: [
+        `${pages} pages/screens`,
+        `${integrations} integrations`,
+        `${customFeatures} custom modules`,
+        `${complexity} complexity`,
+        `${timelineWeeks}-week timeline`,
+      ],
+    });
+
+    if (error) {
+      toast.error("Failed to save quote");
+    } else {
+      toast.success("Quote saved to database");
+      onQuoteSaved?.();
+    }
+    setSaving(false);
+  };
+
   return (
     <section className="glass rounded-xl border border-border p-5 md:p-6 mb-8">
       <div className="flex items-center gap-2 mb-1">
@@ -70,8 +113,17 @@ const QuoteCalculator = () => {
         <h2 className="font-heading text-lg font-semibold">Professional Quote Calculator</h2>
       </div>
       <p className="text-sm text-muted-foreground mb-5">
-        Generate a structured pricing estimate with total project cost and monthly maintenance plans.
+        Generate a structured pricing estimate and save it to your quotes database.
       </p>
+
+      {/* Client Info */}
+      <div className="grid md:grid-cols-2 gap-4 mb-4">
+        <input value={clientName} onChange={(e) => setClientName(e.target.value)} className="px-3 py-2 rounded-lg bg-muted border border-border text-foreground" placeholder="Client name" />
+        <input value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} className="px-3 py-2 rounded-lg bg-muted border border-border text-foreground" placeholder="Client email" />
+        <input value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} className="px-3 py-2 rounded-lg bg-muted border border-border text-foreground" placeholder="Client phone" />
+        <input value={clientCompany} onChange={(e) => setClientCompany(e.target.value)} className="px-3 py-2 rounded-lg bg-muted border border-border text-foreground" placeholder="Company" />
+      </div>
+      <textarea value={description} onChange={(e) => setDescription(e.target.value)} className="w-full px-3 py-2 rounded-lg bg-muted border border-border text-foreground mb-4 min-h-[60px]" placeholder="Project description" />
 
       <div className="grid md:grid-cols-3 gap-4 mb-4">
         <select value={projectType} onChange={(e) => setProjectType(e.target.value)} className="px-3 py-2 rounded-lg bg-muted border border-border text-foreground">
@@ -99,9 +151,21 @@ const QuoteCalculator = () => {
         <input type="number" min={0} value={customFeatures} onChange={(e) => setCustomFeatures(Number(e.target.value) || 0)} className="px-3 py-2 rounded-lg bg-muted border border-border text-foreground" placeholder="Custom modules" />
       </div>
 
-      <button onClick={() => setSubmitted(true)} className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity">
-        Submit & Generate Detailed Quote
-      </button>
+      <div className="flex gap-2">
+        <button onClick={() => setSubmitted(true)} className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity">
+          Generate Quote
+        </button>
+        {submitted && (
+          <button
+            onClick={saveToDatabase}
+            disabled={saving || !description.trim()}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+          >
+            {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+            Save to Database
+          </button>
+        )}
+      </div>
 
       {submitted && (
         <div className="mt-5 grid lg:grid-cols-2 gap-4 text-sm">
