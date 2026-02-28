@@ -113,7 +113,7 @@ const AdminDashboard = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8">
-        <QuoteCalculator />
+        <QuoteCalculator onQuoteSaved={fetchQuotes} />
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
