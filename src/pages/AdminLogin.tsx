@@ -2,24 +2,40 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
-import { Lock, Mail, ArrowLeft } from "lucide-react";
+import { Lock, Mail, ArrowLeft, UserPlus } from "lucide-react";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const { signIn } = useAuth();
+  const [isSignupMode, setIsSignupMode] = useState(false);
+  const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (isSignupMode && password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
     setLoading(true);
     try {
-      await signIn(email, password);
-      toast.success("Logged in successfully");
-      navigate("/admin");
+      if (isSignupMode) {
+        await signUp(email, password);
+        toast.success("Account created. Please verify your email, then sign in.");
+        setIsSignupMode(false);
+        setPassword("");
+        setConfirmPassword("");
+      } else {
+        await signIn(email, password);
+        toast.success("Logged in successfully");
+        navigate("/admin");
+      }
     } catch (err: any) {
-      toast.error(err.message || "Login failed");
+      toast.error(err.message || (isSignupMode ? "Signup failed" : "Login failed"));
     } finally {
       setLoading(false);
     }
@@ -41,8 +57,10 @@ const AdminLogin = () => {
             <div className="w-14 h-14 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: "var(--gradient-primary)" }}>
               <Lock className="w-7 h-7 text-primary-foreground" />
             </div>
-            <h1 className="font-heading text-2xl font-bold">Admin Login</h1>
-            <p className="text-muted-foreground text-sm mt-1">Sign in to manage quotes</p>
+            <h1 className="font-heading text-2xl font-bold">{isSignupMode ? "Admin Sign Up" : "Admin Login"}</h1>
+            <p className="text-muted-foreground text-sm mt-1">
+              {isSignupMode ? "Create your admin account to request access" : "Sign in to manage quotes"}
+            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -74,13 +92,42 @@ const AdminLogin = () => {
                 />
               </div>
             </div>
+
+            {isSignupMode && (
+              <div>
+                <label className="text-sm text-muted-foreground mb-1 block">Confirm Password</label>
+                <div className="relative">
+                  <UserPlus className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 rounded-lg bg-muted border border-border text-foreground focus:border-primary focus:outline-none transition-colors"
+                    placeholder="Re-enter password"
+                    required
+                  />
+                </div>
+              </div>
+            )}
             <button
               type="submit"
               disabled={loading}
               className="w-full py-3 rounded-lg font-medium text-primary-foreground transition-all hover:scale-[1.02] disabled:opacity-50"
               style={{ background: "var(--gradient-primary)" }}
             >
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? (isSignupMode ? "Creating account..." : "Signing in...") : (isSignupMode ? "Create Account" : "Sign In")}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setIsSignupMode((prev) => !prev);
+                setPassword("");
+                setConfirmPassword("");
+              }}
+              className="w-full py-2 rounded-lg border border-border text-sm text-foreground hover:bg-muted transition-colors"
+            >
+              {isSignupMode ? "Already have an account? Sign In" : "No account yet? Create one"}
             </button>
           </form>
         </div>

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import QuoteCalculator from "@/components/admin/QuoteCalculator";
 import {
   LogOut, MessageSquare, Clock, CheckCircle, XCircle,
   Eye, Trash2, Phone, ChevronDown, ChevronUp, ArrowLeft,
@@ -112,6 +113,8 @@ const AdminDashboard = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8">
+        <QuoteCalculator />
+
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {[
