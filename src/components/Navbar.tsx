@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X, Sparkles, Shield } from "lucide-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,6 +23,9 @@ const Navbar = () => {
             <a href="/#services" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Services</a>
             <Link to="/quote-builder" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Visual Builder</Link>
             <a href="/#consultation" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Book Consultation</a>
+            <Link to="/admin/login" className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
+              <Shield className="w-3.5 h-3.5" /> Admin
+            </Link>
             <Link
               to="/quote-builder"
               className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
@@ -42,6 +45,9 @@ const Navbar = () => {
             <a href="/#services" className="block text-sm text-muted-foreground hover:text-foreground" onClick={() => setIsOpen(false)}>Services</a>
             <Link to="/quote-builder" className="block text-sm text-muted-foreground hover:text-foreground" onClick={() => setIsOpen(false)}>Visual Builder</Link>
             <a href="/#consultation" className="block text-sm text-muted-foreground hover:text-foreground" onClick={() => setIsOpen(false)}>Book Consultation</a>
+            <Link to="/admin/login" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground" onClick={() => setIsOpen(false)}>
+              <Shield className="w-3.5 h-3.5" /> Admin
+            </Link>
             <Link
               to="/quote-builder"
               className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium w-fit"
