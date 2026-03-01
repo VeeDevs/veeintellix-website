@@ -1,7 +1,9 @@
-import { useMemo, useState } from "react";
-import { Calculator, FileText, Save, Loader2 } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import { Calculator, FileText, Save, Loader2, Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 
 const currency = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -23,6 +25,8 @@ const QuoteCalculator = ({ onQuoteSaved }: { onQuoteSaved?: () => void }) => {
   const [clientPhone, setClientPhone] = useState("");
   const [clientCompany, setClientCompany] = useState("");
   const [description, setDescription] = useState("");
+  const [exporting, setExporting] = useState(false);
+  const quoteRef = useRef<HTMLDivElement>(null);
 
   const breakdown = useMemo(() => {
     const typeBase: Record<string, number> = {
@@ -106,6 +110,45 @@ const QuoteCalculator = ({ onQuoteSaved }: { onQuoteSaved?: () => void }) => {
     setSaving(false);
   };
 
+  const exportPdf = async () => {
+    if (!quoteRef.current) return;
+    setExporting(true);
+    try {
+      const canvas = await html2canvas(quoteRef.current, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: "#1a1a2e",
+      });
+      const pdf = new jsPDF("p", "mm", "a4");
+      const imgData = canvas.toDataURL("image/png");
+      const imgWidth = 190;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 10;
+
+      pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+      heightLeft -= 277;
+
+      while (heightLeft > 0) {
+        pdf.addPage();
+        position = 10;
+        pdf.addImage(imgData, "PNG", 10, position - (imgHeight - heightLeft), imgWidth, imgHeight);
+        heightLeft -= 277;
+      }
+
+      const fileName = clientName
+        ? `quote-${clientName.replace(/\s+/g, "-").toLowerCase()}.pdf`
+        : "quote.pdf";
+      pdf.save(fileName);
+      toast.success("PDF exported successfully");
+    } catch {
+      toast.error("Failed to export PDF");
+    } finally {
+      setExporting(false);
+    }
+  };
+
   return (
     <section className="glass rounded-xl border border-border p-5 md:p-6 mb-8">
       <div className="flex items-center gap-2 mb-1">
@@ -156,20 +199,31 @@ const QuoteCalculator = ({ onQuoteSaved }: { onQuoteSaved?: () => void }) => {
           Generate Quote
         </button>
         {submitted && (
-          <button
-            onClick={saveToDatabase}
-            disabled={saving || !description.trim()}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
-          >
-            {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-            Save to Database
-          </button>
+          <>
+            <button
+              onClick={saveToDatabase}
+              disabled={saving || !description.trim()}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+            >
+              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+              Save to Database
+            </button>
+            <button
+              onClick={exportPdf}
+              disabled={exporting}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+            >
+              {exporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+              Export PDF
+            </button>
+          </>
         )}
       </div>
 
       {submitted && (
-        <div className="mt-5 grid lg:grid-cols-2 gap-4 text-sm">
+        <div ref={quoteRef} className="mt-5 grid lg:grid-cols-2 gap-4 text-sm">
           <div className="rounded-lg bg-muted/50 border border-border p-4 space-y-2">
+            {clientName && <p className="text-xs text-muted-foreground mb-2">Client: {clientName} {clientCompany ? `(${clientCompany})` : ""}</p>}
             <div className="flex items-center gap-2 font-medium"><FileText className="w-4 h-4 text-primary" /> Price Breakdown</div>
             <p className="flex justify-between"><span>Base project cost</span><span>{currency.format(breakdown.base)}</span></p>
             <p className="flex justify-between"><span>Complexity adjustment</span><span>{currency.format(breakdown.complexityCost)}</span></p>
