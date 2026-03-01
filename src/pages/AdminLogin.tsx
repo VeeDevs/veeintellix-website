@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -10,8 +10,15 @@ const AdminLogin = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [isSignupMode, setIsSignupMode] = useState(false);
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, isAdmin, user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+
+  // Navigate to dashboard once admin status is confirmed
+  useEffect(() => {
+    if (!authLoading && user && isAdmin) {
+      navigate("/admin");
+    }
+  }, [user, isAdmin, authLoading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,8 +38,7 @@ const AdminLogin = () => {
         setConfirmPassword("");
       } else {
         await signIn(email, password);
-        toast.success("Logged in successfully");
-        navigate("/admin");
+        toast.success("Logged in successfully — verifying admin access...");
       }
     } catch (err: any) {
       toast.error(err.message || (isSignupMode ? "Signup failed" : "Login failed"));
