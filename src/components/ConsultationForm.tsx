@@ -37,15 +37,16 @@ const ConsultationForm = () => {
 
   return (
     <section id="consultation" className="py-24 relative">
+      <div className="absolute inset-0 -z-10 opacity-40 bg-[radial-gradient(circle_at_20%_10%,hsla(164,86%,43%,0.15),transparent_32%),radial-gradient(circle_at_80%_80%,hsla(196,92%,56%,0.16),transparent_30%)]" />
       <div className="container mx-auto px-4 max-w-2xl">
         <div className="text-center mb-12">
           <h2 className="font-heading text-4xl font-bold mb-4">
             Book <span className="gradient-text">Consultation</span>
           </h2>
-          <p className="text-muted-foreground">Schedule a call with our experts to discuss your project</p>
+          <p className="text-muted-foreground">Tell us what you need and we will send a scoped plan with costs.</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5 p-8 rounded-xl border border-border bg-card">
+        <form onSubmit={handleSubmit} className="space-y-5 p-8 rounded-xl border border-border bg-card/85 shadow-[0_16px_45px_hsla(210,45%,7%,0.42)]">
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
               <label className="text-sm text-muted-foreground mb-1 block">Full Name *</label>
@@ -55,6 +56,7 @@ const ConsultationForm = () => {
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground focus:border-primary focus:outline-none transition-colors"
                 placeholder="Your name"
+                required
               />
             </div>
             <div>
@@ -65,6 +67,7 @@ const ConsultationForm = () => {
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground focus:border-primary focus:outline-none transition-colors"
                 placeholder="you@company.com"
+                required
               />
             </div>
           </div>
@@ -87,6 +90,7 @@ const ConsultationForm = () => {
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
                 className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground focus:border-primary focus:outline-none transition-colors"
                 placeholder="+27..."
+                required
               />
             </div>
           </div>
@@ -134,6 +138,9 @@ const ConsultationForm = () => {
             <Phone className="w-4 h-4" />
             Prefer WhatsApp? Chat with us directly
           </a>
+          <p className="text-xs text-center text-muted-foreground">
+            After submitting, we respond within one business day.
+          </p>
         </form>
       </div>
     </section>

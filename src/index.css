@@ -6,49 +6,49 @@
 
 @layer base {
   :root {
-    --background: 222 47% 6%;
+    --background: 210 45% 7%;
     --foreground: 210 40% 96%;
 
-    --card: 222 47% 9%;
+    --card: 210 35% 11%;
     --card-foreground: 210 40% 96%;
 
-    --popover: 222 47% 9%;
+    --popover: 210 35% 11%;
     --popover-foreground: 210 40% 96%;
 
-    --primary: 217 91% 60%;
-    --primary-foreground: 222 47% 6%;
+    --primary: 196 92% 56%;
+    --primary-foreground: 210 45% 7%;
 
-    --secondary: 263 70% 58%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 32 95% 55%;
+    --secondary-foreground: 210 45% 7%;
 
-    --muted: 222 30% 14%;
-    --muted-foreground: 215 20% 55%;
+    --muted: 210 28% 15%;
+    --muted-foreground: 215 20% 72%;
 
-    --accent: 330 80% 60%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 164 86% 43%;
+    --accent-foreground: 210 45% 7%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 222 20% 18%;
-    --input: 222 20% 18%;
-    --ring: 217 91% 60%;
+    --border: 210 20% 24%;
+    --input: 210 20% 24%;
+    --ring: 196 92% 56%;
 
     --radius: 0.75rem;
 
-    --gradient-primary: linear-gradient(135deg, hsl(217, 91%, 60%) 0%, hsl(263, 70%, 58%) 50%, hsl(330, 80%, 60%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(196, 92%, 56%) 0%, hsl(174, 84%, 44%) 55%, hsl(32, 95%, 55%) 100%);
     --gradient-glass: rgba(15, 23, 42, 0.7);
-    --shadow-neon: 0 0 20px hsla(217, 91%, 60%, 0.5), 0 0 40px hsla(263, 70%, 58%, 0.3);
-    --shadow-card: 0 8px 32px hsla(222, 47%, 6%, 0.6);
+    --shadow-neon: 0 0 20px hsla(196, 92%, 56%, 0.4), 0 0 40px hsla(174, 84%, 44%, 0.25);
+    --shadow-card: 0 8px 32px hsla(210, 45%, 7%, 0.55);
 
-    --sidebar-background: 222 47% 8%;
+    --sidebar-background: 210 45% 8%;
     --sidebar-foreground: 210 40% 96%;
-    --sidebar-primary: 217 91% 60%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 222 30% 14%;
+    --sidebar-primary: 196 92% 56%;
+    --sidebar-primary-foreground: 210 45% 7%;
+    --sidebar-accent: 210 28% 15%;
     --sidebar-accent-foreground: 210 40% 96%;
-    --sidebar-border: 222 20% 18%;
-    --sidebar-ring: 217 91% 60%;
+    --sidebar-border: 210 20% 24%;
+    --sidebar-ring: 196 92% 56%;
 
     --success: 142 71% 45%;
     --success-foreground: 0 0% 100%;
@@ -65,6 +65,9 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', sans-serif;
+    background-image:
+      radial-gradient(circle at 20% 20%, hsla(196, 92%, 56%, 0.12), transparent 28%),
+      radial-gradient(circle at 80% 0%, hsla(32, 95%, 55%, 0.11), transparent 24%);
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -92,8 +95,8 @@
 
   .bg-grid {
     background-size: 50px 50px;
-    background-image: linear-gradient(to right, hsla(217, 91%, 60%, 0.08) 1px, transparent 1px),
-                        linear-gradient(to bottom, hsla(217, 91%, 60%, 0.08) 1px, transparent 1px);
+    background-image: linear-gradient(to right, hsla(196, 92%, 56%, 0.08) 1px, transparent 1px),
+                        linear-gradient(to bottom, hsla(196, 92%, 56%, 0.08) 1px, transparent 1px);
   }
 
   .animate-float {
@@ -125,9 +128,9 @@
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: hsl(222, 47%, 6%);
+  background: hsl(210, 45%, 7%);
 }
 ::-webkit-scrollbar-thumb {
-  background: hsl(217, 91%, 60%);
+  background: hsl(196, 92%, 56%);
   border-radius: 4px;
 }

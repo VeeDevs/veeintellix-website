@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, BadgeCheck } from "lucide-react";
 
 const Hero = () => {
   return (
@@ -8,23 +8,23 @@ const Hero = () => {
       <div className="absolute inset-0 bg-grid animate-grid-move opacity-50" />
       
       {/* Gradient orbs */}
-      <div className="absolute top-20 left-10 w-72 h-72 rounded-full bg-primary/10 blur-[100px]" />
-      <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-secondary/10 blur-[100px]" />
+      <div className="absolute top-20 left-10 w-72 h-72 rounded-full bg-primary/20 blur-[100px]" />
+      <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-secondary/20 blur-[100px]" />
 
       <div className="container mx-auto px-4 pt-24 relative z-10">
         <div className="max-w-3xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/5 text-primary text-sm mb-8 animate-fade-in">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/35 bg-primary/10 text-primary text-sm mb-8 animate-fade-in">
             <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
-            Available for new projects in Pretoria & Remote
+            Open for new projects in Pretoria and Remote
           </div>
 
           <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 animate-fade-in" style={{ animationDelay: "0.1s" }}>
-            We Build Digital{" "}
-            <span className="gradient-text">Excellence</span>
+            Software delivery with{" "}
+            <span className="gradient-text">clear scope and fast execution</span>
           </h1>
 
           <p className="text-lg text-muted-foreground mb-10 max-w-xl mx-auto animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            Transforming ideas into powerful software, stunning websites, and innovative mobile applications. Experience the future with our AI-powered visual builder.
+            From idea to launch, we design and build reliable products across web, mobile, automation, and cloud infrastructure.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in" style={{ animationDelay: "0.3s" }}>
@@ -45,13 +45,18 @@ const Hero = () => {
             </a>
           </div>
 
-          <div className="grid grid-cols-3 gap-8 mt-16 animate-fade-in" style={{ animationDelay: "0.4s" }}>
+          <div className="mt-8 flex items-center justify-center gap-2 text-sm text-muted-foreground animate-fade-in" style={{ animationDelay: "0.35s" }}>
+            <BadgeCheck className="w-4 h-4 text-accent" />
+            Fixed milestones, transparent pricing, and weekly updates
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-12 animate-fade-in" style={{ animationDelay: "0.4s" }}>
             {[
               { value: "150+", label: "Projects Delivered" },
-              { value: "98%", label: "Client Satisfaction" },
-              { value: "24/7", label: "Support Available" },
+              { value: "98%", label: "Client Retention" },
+              { value: "48 hrs", label: "Proposal Turnaround" },
             ].map((stat) => (
-              <div key={stat.label} className="text-center">
+              <div key={stat.label} className="text-center rounded-xl border border-border/80 bg-card/70 p-5">
                 <div className="font-heading text-3xl font-bold gradient-text">{stat.value}</div>
                 <div className="text-sm text-muted-foreground mt-1">{stat.label}</div>
               </div>

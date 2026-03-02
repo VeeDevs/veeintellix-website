@@ -42,13 +42,14 @@ const services = [
 const Services = () => {
   return (
     <section id="services" className="py-24 relative">
+      <div className="absolute inset-0 -z-10 opacity-40 bg-[radial-gradient(circle_at_10%_20%,hsla(196,92%,56%,0.15),transparent_32%),radial-gradient(circle_at_90%_80%,hsla(32,95%,55%,0.14),transparent_28%)]" />
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="font-heading text-4xl font-bold mb-4">
             Our <span className="gradient-text">Expertise</span>
           </h2>
           <p className="text-muted-foreground max-w-lg mx-auto">
-            End-to-end digital solutions tailored to accelerate your business growth
+            End-to-end delivery for teams that need production-ready outcomes, not just prototypes.
           </p>
         </div>
 
@@ -56,7 +57,7 @@ const Services = () => {
           {services.map((service) => (
             <div
               key={service.title}
-              className="group p-6 rounded-xl border border-border bg-card hover:border-primary/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_40px_hsla(217,91%,60%,0.15)]"
+              className="group p-6 rounded-xl border border-border bg-card/80 hover:border-primary/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_40px_hsla(196,92%,56%,0.16)]"
             >
               <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                 <service.icon className="w-6 h-6 text-primary" />
@@ -65,7 +66,7 @@ const Services = () => {
               <p className="text-sm text-muted-foreground mb-4">{service.description}</p>
               <div className="flex flex-wrap gap-2">
                 {service.tags.map((tag) => (
-                  <span key={tag} className="text-xs px-3 py-1 rounded-full bg-muted text-muted-foreground">
+                  <span key={tag} className="text-xs px-3 py-1 rounded-full bg-muted text-muted-foreground border border-border/60">
                     {tag}
                   </span>
                 ))}
