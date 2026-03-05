@@ -23,7 +23,8 @@ const Navbar = () => {
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
-            <a href="/#services" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Services</a>
+            <a href="/#products" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Products</a>
+            <a href="/#articles" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Articles</a>
             <Link to="/quote-builder" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Quote Builder</Link>
             <a href="/#consultation" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Consultation</a>
             <Link to="/admin/login" className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
@@ -47,7 +48,8 @@ const Navbar = () => {
         {isOpen && (
           <div className="md:hidden pb-4">
             <div className="glass rounded-xl p-4 space-y-3">
-              <a href="/#services" className="block text-sm text-muted-foreground hover:text-foreground" onClick={() => setIsOpen(false)}>Services</a>
+              <a href="/#products" className="block text-sm text-muted-foreground hover:text-foreground" onClick={() => setIsOpen(false)}>Products</a>
+              <a href="/#articles" className="block text-sm text-muted-foreground hover:text-foreground" onClick={() => setIsOpen(false)}>Articles</a>
               <Link to="/quote-builder" className="block text-sm text-muted-foreground hover:text-foreground" onClick={() => setIsOpen(false)}>Quote Builder</Link>
               <a href="/#consultation" className="block text-sm text-muted-foreground hover:text-foreground" onClick={() => setIsOpen(false)}>Consultation</a>
               <Link to="/admin/login" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground" onClick={() => setIsOpen(false)}>

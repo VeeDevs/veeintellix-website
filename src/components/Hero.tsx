@@ -37,10 +37,10 @@ const Hero = () => {
               Try AI Quote Builder
             </Link>
             <a
-              href="#services"
+              href="#products"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-medium border border-border text-foreground hover:bg-muted transition-colors"
             >
-              Explore Services
+              Explore Products
               <ArrowRight className="w-4 h-4" />
             </a>
           </div>
