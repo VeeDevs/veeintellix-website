@@ -68,12 +68,22 @@ const InstallAppPrompt = () => {
     );
   }
 
+  const isSecureInstallContext =
+    window.isSecureContext || window.location.hostname === "localhost";
+
   return (
-    <p className="text-xs text-muted-foreground mt-4 max-w-lg mx-auto">
-      {isIOS
-        ? "On iPhone/iPad: open in Safari, tap Share, then Add to Home Screen."
-        : "In Chrome/Edge: open browser menu and select Install app or Add to Home screen."}
-    </p>
+    <div className="text-xs text-muted-foreground mt-4 max-w-xl mx-auto space-y-1">
+      <p>
+        {isIOS
+          ? "iPhone/iPad: open in Safari, tap Share, then Add to Home Screen."
+          : "Android/Windows/macOS/Huawei (Chrome/Edge): open browser menu, then Install app or Add to Home screen."}
+      </p>
+      {!isSecureInstallContext && (
+        <p className="text-warning">
+          Install prompts only work on HTTPS (or localhost). Current context is not secure.
+        </p>
+      )}
+    </div>
   );
 };
 

@@ -148,7 +148,7 @@
 
   .flip-card {
     perspective: 1400px;
-    min-height: 560px;
+    min-height: 500px;
     background: transparent;
     border: 0;
     padding: 0;
@@ -159,7 +159,7 @@
   .flip-card-inner {
     position: relative;
     width: 100%;
-    min-height: 560px;
+    min-height: 500px;
     transition: transform 0.7s;
     transform-style: preserve-3d;
   }
@@ -171,13 +171,14 @@
   .flip-card-face {
     position: absolute;
     width: 100%;
-    min-height: 560px;
+    min-height: 500px;
     backface-visibility: hidden;
     border-radius: 1rem;
     border: 1px solid hsl(var(--border));
     background: hsla(210, 35%, 11%, 0.85);
     box-shadow: 0 18px 45px hsla(210, 45%, 7%, 0.35);
     padding: 1.5rem;
+    overflow-y: auto;
   }
 
   .flip-card-front {
@@ -229,11 +230,12 @@
     .flip-card,
     .flip-card-inner,
     .flip-card-face {
-      min-height: 680px;
+      min-height: 560px;
+      padding: 1rem;
     }
 
     .challenge-stage {
-      min-height: 320px;
+      min-height: 290px;
     }
 
     .news-pill {
