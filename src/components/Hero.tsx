@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Sparkles, BadgeCheck } from "lucide-react";
+import InstallAppPrompt from "@/components/InstallAppPrompt";
 
 const Hero = () => {
   return (
@@ -43,6 +44,10 @@ const Hero = () => {
               Explore Products
               <ArrowRight className="w-4 h-4" />
             </a>
+          </div>
+
+          <div className="animate-fade-in" style={{ animationDelay: "0.34s" }}>
+            <InstallAppPrompt />
           </div>
 
           <div className="mt-8 flex items-center justify-center gap-2 text-sm text-muted-foreground animate-fade-in" style={{ animationDelay: "0.35s" }}>
