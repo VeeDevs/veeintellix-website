@@ -52,16 +52,16 @@ export const projects = [
   },
   {
     slug: "speak-easy-tutor",
-    title: "SpeakEasy Tutor",
-    subtitle: "Language learning",
-    category: "Websites" as ProjectCategory,
+    title: "VeeIntellix Tutor",
+    subtitle: "AI English learning",
+    category: "Web applications" as ProjectCategory,
     description:
-      "A tutor-focused learning experience for learners looking to build confidence speaking a new language.",
-    purpose: "A clear place to explore tutoring and language-learning support.",
+      "An AI-assisted English-learning platform with tutor chat, speaking practice, exam mode, past papers, progress tracking and spaced review.",
+    purpose: "A personalised English-learning space with NSC curriculum support.",
     url: "https://speakeasy-tutor-seven.vercel.app/",
     image: "/projects/speakeasy-tutor.svg",
-    alt: "Illustrated preview for the SpeakEasy Tutor website",
-    tags: ["Website", "Tutoring"],
+    alt: "Illustrated preview of the VeeIntellix Tutor learning dashboard",
+    tags: ["Web application", "AI English learning"],
   },
   {
     slug: "whisper-of-hope",
