@@ -16,14 +16,14 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.ico", "robots.txt", "placeholder.svg"],
+      includeAssets: ["favicon.ico", "robots.txt"],
       manifest: {
         name: "VeeIntellix M3 IT Solutions",
         short_name: "VeeIntellix",
         description:
-          "Modern web, mobile, cloud, AI, and cybersecurity solutions by VeeIntellix.",
-        theme_color: "#12baf7",
-        background_color: "#0a1420",
+          "Useful business websites, software, mobile experiences and practical automation by VeeIntellix M3 IT Solutions.",
+        theme_color: "#f6f6f1",
+        background_color: "#f6f6f1",
         display: "standalone",
         orientation: "portrait",
         scope: "/",
@@ -44,10 +44,7 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
-      },
-      devOptions: {
-        enabled: true,
+        globPatterns: ["**/*.{js,css,html,ico,png,jpg,jpeg,svg,woff2}"],
       },
     }),
   ],

@@ -1,4 +1,4 @@
 project_id = "nschkaapxjcjmcwhdrfx"
 
-[functions.quote-ai]
-verify_jwt = false
+# The legacy quote-ai function is retired. Project estimates are now calculated
+# locally in the public app and do not generate previews.

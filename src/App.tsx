@@ -1,35 +1,36 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "@/hooks/useAuth";
-import Index from "./pages/Index";
-import QuoteBuilder from "./pages/QuoteBuilder";
-import AdminLogin from "./pages/AdminLogin";
-import AdminDashboard from "./pages/AdminDashboard";
-import NotFound from "./pages/NotFound";
+import { lazy, Suspense } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { SiteLayout } from "@/components/SiteLayout";
 
-const queryClient = new QueryClient();
+const Home = lazy(() => import("@/pages/Home"));
+const ServicesPage = lazy(() => import("@/pages/ServicesPage"));
+const WorkPage = lazy(() => import("@/pages/WorkPage"));
+const AboutPage = lazy(() => import("@/pages/AboutPage"));
+const EstimatePage = lazy(() => import("@/pages/EstimatePage"));
+const ContactPage = lazy(() => import("@/pages/ContactPage"));
+const NotFound = lazy(() => import("@/pages/NotFound"));
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <AuthProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/quote-builder" element={<QuoteBuilder />} />
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin" element={<AdminDashboard />} />
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Suspense fallback={null}>
+        <Routes>
+          <Route element={<SiteLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/work" element={<WorkPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/estimate" element={<EstimatePage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route
+              path="/quote-builder"
+              element={<Navigate to="/estimate" replace />}
+            />
+            <Route path="/admin/*" element={<Navigate to="/" replace />} />
             <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </AuthProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
-
-export default App;
+          </Route>
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
+  );
+}
