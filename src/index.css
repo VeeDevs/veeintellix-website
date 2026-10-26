@@ -2024,3 +2024,132 @@ h2 em {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Theme switch and direct contact enquiry */
+.theme-toggle {
+  width: 39px;
+  height: 39px;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--line);
+  cursor: pointer;
+}
+.theme-toggle:hover { background: var(--white); }
+.mobile-theme-toggle { display: none; }
+
+.contact-form-shell {
+  display: grid;
+  grid-template-columns: 0.75fr 1fr;
+  gap: 64px;
+  padding-block: 25px 105px;
+}
+.contact-form-shell h2 {
+  margin: 0 0 12px;
+  font: 650 clamp(28px, 3.5vw, 42px)/1.1 var(--display);
+  letter-spacing: -1.4px;
+}
+.contact-form-shell > div > p:last-child { color: #596764; }
+.contact-form {
+  display: grid;
+  gap: 16px;
+}
+.contact-field { display: grid; gap: 7px; }
+.contact-field > span { font-size: 12px; font-weight: 700; }
+.contact-field input,
+.contact-field textarea {
+  width: 100%;
+  padding: 13px 14px;
+  color: var(--ink);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 0;
+}
+.contact-field textarea { resize: vertical; }
+.contact-field input:focus,
+.contact-field textarea:focus { outline: 2px solid #70a500; outline-offset: 1px; }
+.contact-form .button:disabled { opacity: .65; cursor: wait; transform: none; }
+.contact-form-note { margin: -3px 0 0; color: var(--muted); font-size: 11px; }
+.form-success { margin: 0; padding: 11px 13px; color: #24562b; background: #e6f1d1; font-size: 13px; }
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #edf1eb;
+  --muted: #b3beb7;
+  --paper: #121917;
+  --white: #1c2521;
+  --line: #36423c;
+  --lime: #c5ed68;
+  --lime-dark: #a8d644;
+}
+html[data-theme="dark"] body { color: var(--ink); background: var(--paper); }
+html[data-theme="dark"] .site-header,
+html[data-theme="dark"] .mobile-nav,
+html[data-theme="dark"] .site-footer,
+html[data-theme="dark"] .work-list,
+html[data-theme="dark"] .service-catalog,
+html[data-theme="dark"] .about-body,
+html[data-theme="dark"] .about-values,
+html[data-theme="dark"] .contact-next,
+html[data-theme="dark"] .contact-form-shell,
+html[data-theme="dark"] .privacy-note,
+html[data-theme="dark"] .estimator-section,
+html[data-theme="dark"] .scope-note { background-color: var(--paper); color: var(--ink); }
+html[data-theme="dark"] .hero-visual,
+html[data-theme="dark"] .service-teaser,
+html[data-theme="dark"] .project-copy,
+html[data-theme="dark"] .process-item,
+html[data-theme="dark"] .principle-list > div,
+html[data-theme="dark"] .service-row,
+html[data-theme="dark"] .contact-option,
+html[data-theme="dark"] .estimator-panel,
+html[data-theme="dark"] .estimate-card,
+html[data-theme="dark"] .rate-note,
+html[data-theme="dark"] .choice-card,
+html[data-theme="dark"] .feature-choice,
+html[data-theme="dark"] .brief-preview,
+html[data-theme="dark"] .contact-field input,
+html[data-theme="dark"] .contact-field textarea {
+  color: var(--ink);
+  background-color: var(--white);
+  border-color: var(--line);
+}
+html[data-theme="dark"] .hero-lede,
+html[data-theme="dark"] .section-intro,
+html[data-theme="dark"] .project-copy > p,
+html[data-theme="dark"] .service-teaser p,
+html[data-theme="dark"] .process-item p,
+html[data-theme="dark"] .principle-list p,
+html[data-theme="dark"] .contact-option p,
+html[data-theme="dark"] .contact-form-shell > div > p:last-child,
+html[data-theme="dark"] .page-hero > p:not(.eyebrow),
+html[data-theme="dark"] .estimator-heading > p:not(.eyebrow),
+html[data-theme="dark"] .about-copy p,
+html[data-theme="dark"] .privacy-note p { color: #b3beb7; }
+html[data-theme="dark"] h1 em,
+html[data-theme="dark"] h2 em,
+html[data-theme="dark"] .hero h1 em { color: #c2d79b; }
+html[data-theme="dark"] .button-dark,
+html[data-theme="dark"] .brand-mark { color: #fff; background-color: #263a34; }
+html[data-theme="dark"] .button-lime { color: #17252a; background-color: var(--lime); }
+html[data-theme="dark"] .button-light,
+html[data-theme="dark"] .filter-chip,
+html[data-theme="dark"] .theme-toggle { color: var(--ink); border-color: var(--line); }
+html[data-theme="dark"] .button-light:hover,
+html[data-theme="dark"] .filter-chip:hover,
+html[data-theme="dark"] .theme-toggle:hover { background-color: #29342f; }
+html[data-theme="dark"] .filter-chip.selected { color: #17252a; background-color: var(--lime); }
+html[data-theme="dark"] .contact-icon,
+html[data-theme="dark"] .done-icon { color: var(--ink); background-color: #35423a; }
+html[data-theme="dark"] .form-success { color: #d7f1bf; background-color: #263b2b; }
+
+@media (max-width: 980px) {
+  .contact-form-shell { gap: 32px; }
+  .theme-toggle { margin-left: 0; }
+}
+@media (max-width: 720px) {
+  .theme-toggle { width: 36px; height: 36px; }
+  .mobile-theme-toggle { display: inline-grid; margin: 6px 0 10px; }
+  .contact-form-shell { grid-template-columns: 1fr; gap: 14px; padding-block: 15px 65px; }
+}

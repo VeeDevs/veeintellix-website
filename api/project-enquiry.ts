@@ -77,9 +77,10 @@ export default async function handler(req: Request, res: Response) {
   const name = headerText(body.name, 120);
   const email = text(body.email, 254);
   const phone = text(body.phone, 40);
-  const category = headerText(body.category, 80);
-  const description = text(body.description, maxLength);
-  const brief = text(body.brief, maxLength);
+  const isContact = body.type === "contact";
+  const category = headerText(body.category, 80) || (isContact ? "General enquiry" : "");
+  const description = text(isContact ? body.message : body.description, maxLength);
+  const brief = text(body.brief, maxLength) || (isContact ? description : "");
   const notes = text(body.notes, 1500);
   if (
     !name ||

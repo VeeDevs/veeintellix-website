@@ -45,7 +45,7 @@ Editable ZAR planning ranges and all feature adjustments are centralized in `src
 
 ## Portfolio evidence
 
-Portfolio screenshots in `public/projects/` were captured from the live project URLs listed in `src/data/site.ts`. Descriptions are limited to visible project purpose and functionality; technology stacks and individual contribution claims are omitted where they could not be verified from public pages.
+Portfolio previews are stored in `public/projects/`. The Epoch and SpeakEasy Tutor cards use custom-designed showcase artwork; other project cards use captures from the live project URLs. Descriptions avoid unsupported technology-stack and contribution claims.
 
 ## Supabase retirement and security
 

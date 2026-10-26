@@ -46,9 +46,22 @@ export const projects = [
     purpose:
       "A direct introduction to a luxury experience service and its booking path.",
     url: "https://epoch-website-six.vercel.app/",
-    image: "/projects/epoch.jpg",
-    alt: "Screenshot of The Epoch luxury experiences website",
+    image: "/projects/epoch-showcase.svg",
+    alt: "Designed showcase preview for The Epoch luxury experiences website",
     tags: ["Website", "Event experiences"],
+  },
+  {
+    slug: "speak-easy-tutor",
+    title: "SpeakEasy Tutor",
+    subtitle: "Language learning",
+    category: "Websites" as ProjectCategory,
+    description:
+      "A tutor-focused learning experience for learners looking to build confidence speaking a new language.",
+    purpose: "A clear place to explore tutoring and language-learning support.",
+    url: "https://speakeasy-tutor-seven.vercel.app/",
+    image: "/projects/speakeasy-tutor.svg",
+    alt: "Illustrated preview for the SpeakEasy Tutor website",
+    tags: ["Website", "Tutoring"],
   },
   {
     slug: "whisper-of-hope",

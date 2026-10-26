@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
-import { ArrowUpRight, Menu, X } from "lucide-react";
+import { ArrowUpRight, Menu, Moon, Sun, X } from "lucide-react";
 import { business } from "@/data/site";
 
 const links = [
@@ -12,7 +12,15 @@ const links = [
 
 export function SiteLayout() {
   const [open, setOpen] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    const saved = window.localStorage.getItem("veeintellix-theme");
+    return saved === "dark" || saved === "light" ? saved : "light";
+  });
   const location = useLocation();
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    window.localStorage.setItem("veeintellix-theme", theme);
+  }, [theme]);
   useEffect(() => {
     const pages: Record<string, [string, string]> = {
       "/": [
@@ -94,6 +102,15 @@ export function SiteLayout() {
                 {label}
               </NavLink>
             ))}
+            <button
+              className="theme-toggle"
+              type="button"
+              aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
+              aria-pressed={theme === "dark"}
+              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+            >
+              {theme === "light" ? <Moon size={17} /> : <Sun size={17} />}
+            </button>
             <NavLink
               to="/estimate"
               className={({ isActive }) =>
@@ -119,7 +136,16 @@ export function SiteLayout() {
             className="mobile-nav"
             aria-label="Mobile navigation"
           >
-            {links.map(([label, to]) => (
+            <button
+            className="theme-toggle mobile-theme-toggle"
+            type="button"
+            aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
+            aria-pressed={theme === "dark"}
+            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          >
+            {theme === "light" ? <Moon size={17} /> : <Sun size={17} />}
+          </button>
+          {links.map(([label, to]) => (
               <NavLink key={to} to={to} onClick={() => setOpen(false)}>
                 {label}
               </NavLink>
