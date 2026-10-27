@@ -7,40 +7,32 @@ export default function ContactPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
-  const [sent, setSent] = useState(false);
+  const [emailReady, setEmailReady] = useState(false);
 
-  const sendEnquiry = async (event: FormEvent<HTMLFormElement>) => {
+  const openEmailDraft = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
-    setSent(false);
-    setSending(true);
-    try {
-      const response = await fetch("/api/project-enquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type: "contact",
-          name,
-          email,
-          category: "General enquiry",
-          message,
-        }),
-      });
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok || result.accepted !== true) {
-        throw new Error(result.error || "Your message could not be sent. Please try again.");
-      }
-      setSent(true);
-      setName("");
-      setEmail("");
-      setMessage("");
-    } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "Your message could not be sent. Please email us directly.");
-    } finally {
-      setSending(false);
+    setEmailReady(false);
+
+    if (!name.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Enter your name and a valid email address to continue.");
+      return;
     }
+
+    const subject = `Website enquiry from ${name.trim()}`;
+    const body = [
+      "VeeIntellix M3 IT Solutions — General Enquiry",
+      "",
+      `Name: ${name.trim()}`,
+      `Email: ${email.trim()}`,
+      "",
+      "Message:",
+      message.trim(),
+    ].join("\n");
+
+    window.location.href = `mailto:${business.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setEmailReady(true);
   };
 
   return (
@@ -90,27 +82,60 @@ export default function ContactPage() {
         <div>
           <p className="eyebrow">SEND AN ENQUIRY</p>
           <h2>Write to us directly.</h2>
-          <p>Your message is sent from this site to {business.email}.</p>
+          <p>
+            Your email app will open with the message addressed to {business.email}.
+          </p>
         </div>
-        <form className="contact-form" onSubmit={sendEnquiry}>
+        <form className="contact-form" onSubmit={openEmailDraft}>
           <label className="contact-field">
             <span>Your name</span>
-            <input value={name} onChange={(event) => setName(event.target.value)} autoComplete="name" required maxLength={120} />
+            <input
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              autoComplete="name"
+              required
+              maxLength={120}
+            />
           </label>
           <label className="contact-field">
             <span>Email address</span>
-            <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" required maxLength={254} />
+            <input
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              autoComplete="email"
+              required
+              maxLength={254}
+            />
           </label>
           <label className="contact-field">
             <span>How can we help?</span>
-            <textarea value={message} onChange={(event) => setMessage(event.target.value)} required minLength={15} maxLength={6000} rows={6} />
+            <textarea
+              value={message}
+              onChange={(event) => setMessage(event.target.value)}
+              required
+              minLength={15}
+              maxLength={6000}
+              rows={6}
+            />
           </label>
-          {error && <p className="form-error" role="alert">{error}</p>}
-          {sent && <p className="form-success" role="status">Your enquiry has been sent. We’ll reply to {email || "your email"}.</p>}
-          <button className="button button-dark" type="submit" disabled={sending}>
-            {sending ? "Sending…" : "Send enquiry"} <Send size={15} />
+          {error && (
+            <p className="form-error" role="alert">
+              {error}
+            </p>
+          )}
+          {emailReady && (
+            <p className="form-success" role="status">
+              Your email app should open with the enquiry ready. Review it and
+              press Send to deliver your message.
+            </p>
+          )}
+          <button className="button button-dark" type="submit">
+            Open email app <Send size={15} />
           </button>
-          <p className="contact-form-note">Your message is used only to respond to this enquiry.</p>
+          <p className="contact-form-note">
+            Your message stays in your email app until you press Send.
+          </p>
         </form>
       </section>
       <section className="contact-next section-shell">
@@ -135,10 +160,10 @@ export default function ContactPage() {
       <section id="privacy" className="privacy-note section-shell">
         <span className="eyebrow">PRIVACY</span>
         <p>
-          Contact details and project information are used only to respond to
-          your enquiry and discuss the requested work. Do not include passwords
-          or sensitive personal information. Enquiries are not stored in a
-          public profile or account.
+          Contact details and project information are used only to prepare an
+          email draft for your review. They are not sent or stored by this
+          website unless you send the email from your mail app. Do not include
+          passwords or sensitive personal information.
         </p>
       </section>
     </>

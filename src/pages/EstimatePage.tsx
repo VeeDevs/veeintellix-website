@@ -1,11 +1,10 @@
-import { useMemo, useState, type FormEvent } from "react";
+import { useMemo, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
   Check,
   Clipboard,
-  LoaderCircle,
   Send,
 } from "lucide-react";
 import {
@@ -30,7 +29,7 @@ const types: ProjectType[] = [
   "upgrade",
   "other",
 ];
-const stepNames = ["Project", "Features", "Preferences", "Review", "Send"];
+const stepNames = ["Project", "Features", "Preferences", "Review", "Email"];
 type Draft = {
   type: ProjectType;
   description: string;
@@ -95,7 +94,6 @@ function makeBrief(draft: Draft, range: { min: number; max: number }) {
 export default function EstimatePage() {
   const [draft, setDraft] = useState<Draft>(initial);
   const [step, setStep] = useState(0);
-  const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
   const estimate = useMemo(() => calculateEstimate(draft), [draft]);
@@ -133,48 +131,28 @@ export default function EstimatePage() {
     setError("");
     setStep((current) => Math.max(0, current - 1));
   };
-  const sendEmail = async (event: FormEvent) => {
-    event.preventDefault();
+  const emailUrl = useMemo(() => {
+    const subject = `Project enquiry — ${pricing.categories[draft.type].label}`;
+    const body = `${brief}\n\nPrepared on the VeeIntellix M3 IT Solutions website. Review and send from your email app.`;
+    return `mailto:${business.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  }, [brief, draft.type]);
+
+  const openEmailDraft = () => {
     setError("");
-    if (!draft.name.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.email)) {
-      setError(
-        "Enter your name and a valid email address to send this enquiry.",
-      );
+    const normalizedEmail = draft.email.trim();
+    const emailParts = normalizedEmail.split("@");
+    if (
+      !draft.name.trim() ||
+      emailParts.length !== 2 ||
+      !emailParts[0] ||
+      !emailParts[1]?.includes(".") ||
+      normalizedEmail.includes(" ")
+    ) {
+      setError("Enter your name and a valid email address before opening your email app.");
       return;
     }
-    setSending(true);
-    try {
-      const response = await fetch("/api/project-enquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...draft,
-          companyWebsite: "",
-          category: pricing.categories[draft.type].label,
-          estimate: range,
-          currency: pricing.currency,
-          selectedFeatures: estimate.featureKeys.map(
-            (key) => pricing.features[key].label,
-          ),
-          brief,
-        }),
-      });
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok || result.accepted !== true)
-        throw new Error(
-          result.error ||
-            "Email delivery is not available right now. Your brief is still here; you can send it by WhatsApp instead.",
-        );
-      setStep(5);
-    } catch (reason) {
-      setError(
-        reason instanceof Error
-          ? reason.message
-          : "Could not send your enquiry. Your brief is still here; try WhatsApp instead.",
-      );
-    } finally {
-      setSending(false);
-    }
+    window.location.href = emailUrl;
+    setStep(4);
   };
   const whatsappUrl = useMemo(() => {
     const full = `${brief}\n\nSent from the VeeIntellix M3 website.`;
@@ -504,8 +482,8 @@ export default function EstimatePage() {
                 placeholder="Anything else you'd like us to know?"
               />
               <p className="privacy-inline">
-                We use your details only to respond to this enquiry. Please do
-                not include passwords or sensitive personal information.
+                Your details stay in this brief until you choose to open your
+                email app. Do not include passwords or sensitive personal information.
               </p>
             </div>
           )}
@@ -514,12 +492,20 @@ export default function EstimatePage() {
               <span className="done-icon">
                 <Check size={24} />
               </span>
-              <p className="eyebrow">ENQUIRY ACCEPTED</p>
+              <p className="eyebrow">EMAIL DRAFT READY</p>
               <h2>Thanks, {draft.name.split(" ")[0]}.</h2>
               <p>
-                Your project enquiry was accepted for delivery to VeeIntellix.
-                We can now continue the conversation directly.
+                Your email app should open with the project brief addressed to{" "}
+                {business.email}. Review the details and press Send in your
+                email app to deliver the enquiry.
               </p>
+              <button
+                className="text-button"
+                type="button"
+                onClick={copyBrief}
+              >
+                <Clipboard size={15} /> {copied ? "Copied" : "Copy full brief"}
+              </button>
               <a
                 className="button button-lime"
                 href={whatsappUrl}
@@ -560,18 +546,9 @@ export default function EstimatePage() {
                   <button
                     className="button button-lime"
                     type="button"
-                    disabled={sending}
-                    onClick={sendEmail}
+                    onClick={openEmailDraft}
                   >
-                    {sending ? (
-                      <>
-                        <LoaderCircle className="spin" size={16} /> Sending…
-                      </>
-                    ) : (
-                      <>
-                        Send enquiry <Send size={15} />
-                      </>
-                    )}
+                    Open email app <Send size={15} />
                   </button>
                 </>
               ) : (

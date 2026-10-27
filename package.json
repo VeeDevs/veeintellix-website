@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"api/**/*.ts\" \"supabase/functions/**/*.ts\" vite.config.ts tailwind.config.ts eslint.config.js package.json vercel.json index.html README.md",
-    "typecheck": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit --target ES2022 --module ESNext --moduleResolution bundler --lib ES2022,DOM --types node api/project-enquiry.ts",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"supabase/functions/**/*.ts\" vite.config.ts tailwind.config.ts eslint.config.js package.json vercel.json index.html README.md",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest"

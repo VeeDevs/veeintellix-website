@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-The Vite site runs on port `8080`. To exercise the server-side email endpoint locally, install the Vercel CLI and use `vercel dev` so `/api/project-enquiry` is served as a function.
+The Vite site runs on port `8080`. Enquiry forms hand off to the visitor’s email app through `mailto:` links.
 
 ## Scripts
 
@@ -23,21 +23,11 @@ npm run test
 npm run format
 ```
 
-## Email delivery and environment
+## Email enquiries
 
-Email submissions are handled by the Vercel function at `api/project-enquiry.ts`. It validates required fields, applies a per-instance best-effort rate limit, and sends plain-text email through Resend. Enquiries are not written to Supabase or another public table.
+The Contact and project estimate forms use `mailto:` links. They open the visitor's default email application with the VeeIntellix inbox, subject and message prefilled. The visitor reviews the draft and presses Send. The website does not send or store the enquiry, and it needs no email API, server credentials or provider account. If no email app is set up on the device, visitors can use the direct email link or copy the project brief.
 
-Set these **server-side Vercel environment variables** for Preview and Production:
-
-| Variable            | Purpose                                                              |
-| ------------------- | -------------------------------------------------------------------- |
-| `RESEND_API_KEY`    | Resend API key. Keep this server-side; never prefix it with `VITE_`. |
-| `RESEND_FROM_EMAIL` | Sender address on a domain verified with Resend.                     |
-| `ENQUIRY_TO_EMAIL`  | Optional destination; defaults to `veerambaufx@gmail.com`.           |
-
-WhatsApp handoff uses `+36705686763` and opens a prefilled draft for the visitor to review and send. It does not send automatically. If Resend is unavailable or unconfigured, the page keeps the brief visible and offers WhatsApp.
-
-The current rate limiter uses memory local to a Vercel function instance. For stronger cross-instance abuse protection, configure a Vercel Firewall rule or replace it with a shared rate-limit store before a high-traffic launch. No email credentials are present in the frontend.
+WhatsApp handoff uses `+36705686763` and opens a prefilled draft for the visitor to review and send. It does not send automatically.
 
 ## Pricing review
 
@@ -57,10 +47,10 @@ The provided Downloads copy did not include `.git`, so prior Git history and tra
 
 ## Deployment
 
-Deploy the repository to Vercel. The included `vercel.json` rewrites public routes to the SPA entry point; the `/api` project enquiry route is served as a serverless function. Configure the Resend environment variables, apply the Supabase locking migration, remove the deployed legacy `quote-ai` function, then verify email delivery and all direct contact links on the deployed preview.
+Deploy the repository to Vercel. The included `vercel.json` rewrites public routes to the SPA entry point. No email provider or server-side email environment variables are required. Apply the Supabase locking migration and remove the deployed legacy `quote-ai` function, then verify the email-app handoff and direct contact links on the deployed site.
 
 ## Technology
 
 - React, TypeScript, Vite, Tailwind CSS
 - React Router, Lucide icons
-- Vercel serverless function and Resend email API
+- Vercel static hosting
